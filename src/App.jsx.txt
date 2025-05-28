@@ -1,0 +1,84 @@
+import React, { useEffect, useState } from "react";
+import { supabase } from "./supabase";
+import PlanoBasico from "./componentes/PlanoBasico";
+import PlanoProfissional from "./componentes/PlanoProfissional";
+import PlanoEmpresarial from "./componentes/PlanoEmpresarial";
+import Login from "./pages/Login";
+
+export default function App() {
+  const [usuario, setUsuario] = useState(null);
+  const [plano, setPlano] = useState("");
+  const [carregandoPlano, setCarregandoPlano] = useState(false);
+
+  useEffect(() => {
+    const verificarSessao = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        setUsuario(data.session.user);
+        await buscarPlano(data.session.user.email);
+      }
+    };
+    verificarSessao();
+  }, []);
+
+ const buscarPlano = async (email) => {
+ setCarregandoPlano(true);
+  console.log("Buscando plano para email:", email);
+  const { data, error } = await supabase
+    .from("usuarios")
+    .select("plano")
+    .ilike("Email", email) //
+    .single();
+
+// Logs de depuração:
+  console.log("Dado retornado:", data);
+  console.log("Erro retornado:", error);
+
+  if (error) {
+    console.error("Erro ao buscar plano:", error.message);
+    setPlano("");
+  } else if (data) {
+    console.log("Plano encontrado:", data.plano);
+    setPlano(data.plano);
+  } else {
+    console.log("Nenhum plano encontrado para esse usuario);
+    setPlano("");
+  }
+setCarregandoPlano(false);
+};
+
+  if (!usuario)
+    return (
+      <Login
+        onLogin={async (user) => {
+          setUsuario(user);
+          await buscarPlano(user.email);
+        }}
+      />
+    );
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Bem-vindo!</h1>
+      <button
+        onClick={async () => {
+          await supabase.auth.signOut();
+          setUsuario(null);
+          setPlano("");
+        }}
+      >
+        Sair
+      </button>
+
+      {carregandoPlano && <p>Verificando seu plano...</p>}
+
+      {!carregandoPlano && plano === "básico" && <PlanoBasico />}
+      {!carregandoPlano && plano === "profissional" && <PlanoProfissional />}
+      {!carregandoPlano && plano === "empresarial" && <PlanoEmpresarial />}
+
+      {!carregandoPlano && plano === "" && (
+        <p>Plano não encontrado. Por favor, verifique com o suporte.</p>
+      )}
+    </div>
+  );
+}

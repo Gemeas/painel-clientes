@@ -39,7 +39,7 @@ app.post("/liberar-acesso", async (req, res) => {
     return res.status(400).send("Plano inválido.");
   }
 
-  const { error } = await supabase.from("usuarios").insert([
+  const { error } = await supabase.from("perfis").insert([
     {
       email: email,
       plano: plano,

@@ -8,7 +8,7 @@ const Dashboard = ({ email }) => {
   useEffect(() => {
     const fetchAcessos = async () => {
       const { data, error } = await supabase
-        .from("usuarios")
+        .from("perfis")
         .select("acessos, plano")
         .eq("email", email)
         .single();

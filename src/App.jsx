@@ -29,7 +29,7 @@ export default function App() {
     console.log("Email limpo:", `"${emailLimpo}"`);
 
     const { data, error } = await supabase
-      .from("profile") // ALTERADO de "usuarios" para "profile"
+      .from("perfis") 
       .select("plano")
       .eq("email", emailLimpo);
 

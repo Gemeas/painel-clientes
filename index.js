@@ -49,8 +49,10 @@ app.post("/liberar-acesso", async (req, res) => {
   ]);
 
  if (error) {
-  console.error("Erro ao inserir usuário:", error);  // <-- adicione este log
+  console.error("Erro ao inserir usuário:", error);
   return res.status(500).send("Erro ao salvar no Supabase.");
+} else {
+  console.log("Usuário inserido com sucesso");
 }
 
   try {

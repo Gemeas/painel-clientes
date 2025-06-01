@@ -4,11 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npx vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.26.0",
+    "@supabase/supabase-js": "^2.49.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "serve": "^14.2.4"
@@ -16,5 +16,18 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
     "vite": "^4.5.14"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gemeas/painel-clientes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gemeas/painel-clientes/issues"
+  },
+  "homepage": "https://github.com/Gemeas/painel-clientes#readme",
+  "description": ""
 }

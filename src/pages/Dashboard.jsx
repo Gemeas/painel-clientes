@@ -38,4 +38,4 @@ const Dashboard = ({ email }) => {
   );
 };
 
-export default Dashboard;
+

@@ -8,16 +8,34 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    // Autenticar usuário com Supabase Auth
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password: senha,
+      password: senha, // Corrigido: usar a variável correta
     });
 
     if (error) {
       setErro("Email ou senha inválidos.");
-    } else {
-      onLogin(data.user);
+      return;
     }
+
+    const user = data.user;
+
+    // Buscar perfil do usuário na tabela "perfis"  
+    const { data: perfil, error: perfilError } = await supabase
+      .from("perfis")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+
+    if (perfilError || !perfil) {
+      setErro("Plano não encontrado. Por favor, verifique com o suporte.");
+      return;
+    }
+
+    // Se deu tudo certo, chama o callback com os dados do usuário + plano
+    onLogin({ ...user, plano: perfil.plano });
   };
 
   return (
@@ -46,3 +64,4 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
+

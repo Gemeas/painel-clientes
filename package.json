@@ -11,23 +11,10 @@
     "@supabase/supabase-js": "^2.49.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "serve": "^14.2.4"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.0",
+    "serve": "^14.2.4",
     "vite": "^4.5.14"
   },
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Gemeas/painel-clientes.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Gemeas/painel-clientes/issues"
-  },
-  "homepage": "https://github.com/Gemeas/painel-clientes#readme",
-  "description": ""
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0"
+  }
 }

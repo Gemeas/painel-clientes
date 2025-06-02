@@ -1,7 +1,19 @@
+# node modules
 node_modules/
+
+# arquivos lock (se quiser)
 package-lock.json
-.vite/
-*.map
+yarn.lock
+
+# build
 dist/
 build/
+
+# logs
 *.log
+
+# dependências do vite
+.vite/
+
+# arquivos de mapa
+*.map

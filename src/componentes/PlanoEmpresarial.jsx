@@ -1,17 +1,30 @@
-import React from "react";
+// src/componentes/PlanoEmpresarial.jsx
+import React, { useState } from "react";
+import PrivateRoute from "./PrivateRoute";
 
-const PlanoEmpresarial = () => {
+export default function PlanoEmpresarial() {
+  const [input, setInput] = useState("");
+  const [prompt, setPrompt] = useState("");
+
+  // Simulação de API chamada para gerar prompt (integre OpenAI para real)
+  const gerarPrompt = () => {
+    if (!input) return alert("Descreva seu objetivo");
+    setPrompt(`Prompt gerado para: ${input}`);
+  };
+
   return (
-    <div>
-      <h2>Plano Empresarial</h2>
-      <ul>
-        <li>✅ Todos os Recursos</li>
-        <li>✅ Gerador de Prompts Avançado</li>
-        <li>✅ Consultoria Personalizada</li>
-      </ul>
-      <p>Bem-vindo ao nível máximo. Acesse tudo com exclusividade.</p>
-    </div>
-  );
-};
+    <PrivateRoute permitidoPara={["empresarial"]} plano="empresarial">
+      <h2>Gerador de Prompts Avançado</h2>
+      <textarea
+        placeholder="Descreva seu objetivo de marketing, SEO, etc."
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <button onClick={gerarPrompt}>Gerar Prompt</button>
+      {prompt && <p>{prompt}</p>}
 
-export default PlanoEmpresarial;
+      <h3>Consultoria Personalizada</h3>
+      <p>Agende sua consultoria e receba relatórios detalhados.</p>
+    </PrivateRoute>
+  );
+}

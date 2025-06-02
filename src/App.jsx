@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { supabase } from "./supabase";
 
-import { recursosPorPlano } from "./config/planos";
-import MenuLateral from "./components/MenuLateral";
-import PrivateRoute from "./components/PrivateRoute";
+import MenuLateral from "./componentes/MenuLateral";
+import PrivateRoute from "./componentes/PrivateRoute";
 
+import DashboardInicial from "./pages/DashboardInicial";
 import PlanoBasico from "./componentes/PlanoBasico";
 import PlanoProfissional from "./componentes/PlanoProfissional";
 import PlanoEmpresarial from "./componentes/PlanoEmpresarial";
@@ -59,7 +59,7 @@ export default function App() {
     setCarregandoPlano(false);
   };
 
-  if (!usuario)
+  if (!usuario) {
     return (
       <Login
         onLogin={async (user) => {
@@ -68,11 +68,14 @@ export default function App() {
         }}
       />
     );
+  }
+
+  const planoNormalizado = plano.charAt(0).toUpperCase() + plano.slice(1);
 
   return (
     <BrowserRouter>
       <div style={{ display: "flex" }}>
-        <MenuLateral plano={plano.charAt(0).toUpperCase() + plano.slice(1)} />
+        <MenuLateral plano={planoNormalizado} />
 
         <div style={{ padding: "20px", flex: 1 }}>
           <p>Email: {usuario?.email}</p>
@@ -90,35 +93,30 @@ export default function App() {
 
           {carregandoPlano && <p>Verificando seu plano...</p>}
 
-          {!carregandoPlano && plano === "básico" && <PlanoBasico />}
-          {!carregandoPlano && plano === "profissional" && <PlanoProfissional />}
-          {!carregandoPlano && plano === "empresarial" && <PlanoEmpresarial />}
-          {!carregandoPlano && plano === "" && (
-            <p>Plano não encontrado. Por favor, verifique com o suporte.</p>
+          {!carregandoPlano && (
+            <Routes>
+              <Route
+                element={<PrivateRoute plano={planoNormalizado} />}
+              >
+                <Route path="/dashboard" element={<DashboardInicial plano={planoNormalizado} />} />
+                <Route path="/analise-produto" element={<AnaliseProduto />} />
+                <Route path="/checklist-interativo" element={<ChecklistInterativo />} />
+                <Route path="/suporte-basico" element={<SuporteBasico />} />
+                <Route path="/perfil" element={<Perfil />} />
+                <Route path="/metricas" element={<PainelMetricas />} />
+                <Route path="/suporte-prioritario" element={<SuportePrioritario />} />
+                <Route path="/todos-recursos" element={<TodosRecursos />} />
+                <Route path="/gerador-prompts" element={<GeradorPrompts />} />
+                <Route path="/consultoria-personalizada" element={<ConsultoriaPersonalizada />} />
+              </Route>
+
+              <Route path="/acesso-negado" element={<AcessoNegado />} />
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            </Routes>
           )}
-
-          <Routes>
-            <Route
-              element={
-                <PrivateRoute plano={plano.charAt(0).toUpperCase() + plano.slice(1)} />
-              }
-            >
-              <Route path="/analise-produto" element={<AnaliseProduto />} />
-              <Route path="/checklist-interativo" element={<ChecklistInterativo />} />
-              <Route path="/suporte-basico" element={<SuporteBasico />} />
-              <Route path="/perfil" element={<Perfil />} />
-              <Route path="/metricas" element={<PainelMetricas />} />
-              <Route path="/suporte-prioritario" element={<SuportePrioritario />} />
-              <Route path="/todos-recursos" element={<TodosRecursos />} />
-              <Route path="/gerador-prompts" element={<GeradorPrompts />} />
-              <Route path="/consultoria-personalizada" element={<ConsultoriaPersonalizada />} />
-            </Route>
-
-            <Route path="/acesso-negado" element={<AcessoNegado />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
         </div>
       </div>
     </BrowserRouter>
   );
 }
+

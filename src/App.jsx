@@ -70,6 +70,7 @@ export default function App() {
     );
   }
 
+  // Normaliza plano para capitalizar a primeira letra (ex: 'basico' -> 'Basico')
   const planoNormalizado = plano.charAt(0).toUpperCase() + plano.slice(1);
 
   return (
@@ -79,7 +80,7 @@ export default function App() {
 
         <div style={{ padding: "20px", flex: 1 }}>
           <p>Email: {usuario?.email}</p>
-          <p>Plano: {plano}</p>
+          <p>Plano: {planoNormalizado}</p>
 
           <button
             onClick={async () => {
@@ -95,21 +96,26 @@ export default function App() {
 
           {!carregandoPlano && (
             <Routes>
-              <Route
-                element={<PrivateRoute plano={planoNormalizado} />}
-              >
+              {/* Rotas protegidas com PrivateRoute */}
+              <Route element={<PrivateRoute plano={planoNormalizado} />}>
                 <Route path="/dashboard" element={<DashboardInicial plano={planoNormalizado} />} />
                 <Route path="/analise-produto" element={<AnaliseProduto />} />
                 <Route path="/checklist-interativo" element={<ChecklistInterativo />} />
-                <Route path="/suporte-basico" element={<SuporteBasico />} />
                 <Route path="/perfil" element={<Perfil />} />
-                <Route path="/metricas" element={<PainelMetricas />} />
+                <Route path="/painel-metricas" element={<PainelMetricas />} />                
+<Route path="/suporte-basico" element={<SuporteBasico />} />
                 <Route path="/suporte-prioritario" element={<SuportePrioritario />} />
-                <Route path="/todos-recursos" element={<TodosRecursos />} />
                 <Route path="/gerador-prompts" element={<GeradorPrompts />} />
                 <Route path="/consultoria-personalizada" element={<ConsultoriaPersonalizada />} />
+                <Route path="/todos-recursos" element={<TodosRecursos />} />
+
+                {/* Rotas específicas para cada plano */}
+                <Route path="/plano-basico" element={<PlanoBasico />} />
+                <Route path="/plano-profissional" element={<PlanoProfissional />} />
+                <Route path="/plano-empresarial" element={<PlanoEmpresarial />} />
               </Route>
 
+              {/* Rotas públicas */}
               <Route path="/acesso-negado" element={<AcessoNegado />} />
               <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
@@ -119,4 +125,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
 

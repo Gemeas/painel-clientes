@@ -6,13 +6,13 @@ function PrivateRoute({ plano }) {
   const location = useLocation();
   const recursos = recursosPorPlano[plano] || [];
 
+ console.log("Plano:", plano);
+  console.log("Rota atual:", location.pathname);
+  console.log("Recursos permitidos:", recursos);
+
   const acessoLiberado = recursos.some((recurso) => recurso.rota === location.pathname);
 
-  if (acessoLiberado) {
-    return <Outlet />;
-  } else {
-    return <Navigate to="/acesso-negado" replace />;
-  }
+  return acessoLiberado ? <Outlet /> : <Navigate to="/acesso-negado" replace />;
 }
 
 export default PrivateRoute;
